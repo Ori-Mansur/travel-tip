@@ -9,20 +9,25 @@ import mapService from './services/map.service.js'
 
 
 window.onload = () => {
-    var lat = getParameterByName('lat')
-    var lng = getParameterByName('lng')
+    var lat = +getParameterByName('lat')
+    var lng = +getParameterByName('lng')
     if (!lat && !lng) {
-        lat = 32.0749831
-        lng = 34.9120554
-
-    }
-    mapService.initMap(lat, lng)
+        mapService.initMap(32.0749831, 34.9120554)
+            .then(() => {
+                mapService.addMarker({ lat:32.0749831, lng:34.9120554 });
+                hendelPos()
+    
+            })
+            .catch(console.log('INIT MAP ERROR'));
+    }else{
+        mapService.initMap(lat, lng)
         .then(() => {
-            mapService.addMarker({ lat, lng });
-            hendelPos()
+            mapService.addMarker({ lat:lat, lng:lng });
+            // hendelPos()
 
         })
         .catch(console.log('INIT MAP ERROR'));
+    }
 
 
 
@@ -35,7 +40,7 @@ document.querySelector('.btn').addEventListener('click', (ev) => {
 function hendelPos() {
     locService.getPosition()
         .then(pos => {
-            console.log('User position is:', pos.coords);
+            // console.log('User position is:', pos.coords);
             mapService.panTo(pos.coords.latitude, pos.coords.longitude)
                 .then(() => {
                     mapService.addMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude })
@@ -61,7 +66,7 @@ document.querySelector('.address-input').addEventListener('input', (ev) => {
     if (requstedAddress.length < 4) return
     mapService.getAddressLatlng(requstedAddress)
         .then(loc => {
-            console.log(loc.results[0].geometry.location);
+            // console.log(loc.results[0].geometry.location);
 
             var latlng = loc.results[0].geometry.location;
             mapService.panTo(latlng.lat, latlng.lng)
