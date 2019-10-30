@@ -10,7 +10,7 @@ export default {
 
 
 var map;
-var gLatlng={lat,lng}
+var gLatlng={lat:'',lng:''}
 
 function initMap(lat , lng  ) {
     console.log('InitMap');
