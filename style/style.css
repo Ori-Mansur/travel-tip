@@ -2,12 +2,32 @@
     box-sizing: border-box;
 }
 
+body {
+    background-image: url('https://imgc.allpostersimages.com/img/print/u-g-Q105PYK0.jpg?w=550&h=550&p=0');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .container {
     display: grid;
     grid-template-columns: auto auto;
-    gap: 10px;
+    gap: 30px;
 }
-.weather{
-    
-    border: 1px solid black;
+.weather {
+    background-color: lightgrey;
+    text-align: center;
+}
+
+.temp span {
+    background-color: grey;
+    color: white;
+    border-radius: 5px;
+    padding: 2px;
 }
