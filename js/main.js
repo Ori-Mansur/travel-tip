@@ -42,3 +42,8 @@ document.querySelector('.btn').addEventListener('click', (ev) => {
         })
     console.log('Aha!', ev.target);
 })
+
+
+function renderAddress(address) {
+    document.querySelector('h3').innerText = address;
+}
