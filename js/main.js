@@ -60,6 +60,9 @@ function hendelPos() {
                         })
                     weatherService.getWeather(pos.coords.latitude, pos.coords.longitude)
                         .then(pos => {
+                            console.log(pos);
+                            
+                            console.log(pos.name);
                             console.log(pos.weather[0].description) // descriptive weather
                             console.log(pos.main.temp)      // temp in Kelvin (need to convert to celsius)
                             console.log(pos.wind.speed)     // wind speed in  m/s
