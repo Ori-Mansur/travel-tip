@@ -33,7 +33,7 @@ document.querySelector('.btn').addEventListener('click', (ev) => {
             mapService.panTo(pos.coords.latitude, pos.coords.longitude)
                 .then(() => {
                     mapService.addMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude })
-                    mapService.getAddressName(pos.coords.latitude,pos.coords.longitude)
+                    mapService.getAddressName(pos.coords.latitude, pos.coords.longitude)
                         .then(name => {
                             console.log(name.results[0].formatted_address);
 
@@ -47,3 +47,19 @@ document.querySelector('.btn').addEventListener('click', (ev) => {
 function renderAddress(address) {
     document.querySelector('h3').innerText = address;
 }
+document.querySelector('.address-input').addEventListener('input', (ev) => {
+
+    var requstedAddress = ev.target.value;
+    if (requstedAddress.length < 4) return
+    mapService.getAddressLatlng(requstedAddress)
+        .then(loc => {
+            console.log(loc.results[0].geometry.location);
+
+            var latlng = loc.results[0].geometry.location;
+            mapService.panTo(latlng.lat, latlng.lng)
+            mapService.addMarker(latlng)
+
+        })
+
+})
+

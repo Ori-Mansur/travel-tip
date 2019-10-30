@@ -3,7 +3,8 @@ export default {
     initMap,
     addMarker,
     panTo,
-    getAddressName
+    getAddressName,
+    getAddressLatlng
 }
 
 
@@ -59,11 +60,13 @@ function getAddressName(lat, lng) {
     var prm1 = prm.then(res => res.data)
     return prm1
 }
-function getAddressLatlng(lat, lng) {
-    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+function getAddressLatlng(requstedAddress) {
+    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${requstedAddress},+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+    
     var prm1 = prm.then(res => res.data)
     return prm1
 }
+
 
 
 
