@@ -1,13 +1,25 @@
 * {
     box-sizing: border-box;
 }
+body{
+    margin: 0;
+}
 
 .container {
     display: grid;
     grid-template-columns: auto auto;
+    margin-left: 10px;
+    margin-right: 10px;
     gap: 10px;
 }
 .weather{
     
     border: 1px solid black;
+}
+.actions{
+    text-align: center;
+}
+#myurl{
+    position: fixed;
+    left:-1000px;
 }

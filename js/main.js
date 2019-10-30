@@ -1,4 +1,4 @@
-console.log('Main!');
+'use strict'
 
 import weatherService from './services/weather.service.js'
 import locService from './services/loc.service.js'
