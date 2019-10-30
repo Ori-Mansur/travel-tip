@@ -9,9 +9,16 @@ import mapService from './services/map.service.js'
 
 
 window.onload = () => {
-    mapService.initMap()
+    var lat = getParameterByName('lat')
+    var lng = getParameterByName('lng')
+    if (!lat && !lng) {
+        lat = 32.0749831
+        lng = 34.9120554
+
+    }
+    mapService.initMap(lat, lng)
         .then(() => {
-            mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
+            mapService.addMarker({ lat, lng });
             hendelPos()
 
         })
@@ -44,9 +51,9 @@ function hendelPos() {
 
 function renderAddress(address) {
     document.querySelector('h3').innerText = 'Location: ' + address;
-    document.querySelector('.address-input').placeholder=address
-    
-    
+    document.querySelector('.address-input').placeholder = address
+
+
 }
 document.querySelector('.address-input').addEventListener('input', (ev) => {
 
@@ -64,3 +71,31 @@ document.querySelector('.address-input').addEventListener('input', (ev) => {
 
 })
 
+document.querySelector('.copy').addEventListener('click', (ev) => {
+    var currPos = mapService.getCurrLoc()
+    console.log(currPos);
+    var gUrl = document.getElementById("myurl")
+    gUrl.value = `https://ori-mansur.github.io/travel-tip/?lat=${currPos.lat}&lng=${currPos.lng}`
+    myFunction()
+
+})
+
+function myFunction() {
+    var copyText = document.getElementById("myurl");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999)
+    document.execCommand('copy');
+    // alert("Copied the text: " + copyText.value);
+}
+
+
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
