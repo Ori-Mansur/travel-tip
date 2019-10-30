@@ -1,6 +1,9 @@
 * {
     box-sizing: border-box;
 }
+body{
+    margin: 0;
+}
 
 body {
     background-image: url('https://imgc.allpostersimages.com/img/print/u-g-Q105PYK0.jpg?w=550&h=550&p=0');
@@ -30,4 +33,28 @@ ul {
     color: white;
     border-radius: 5px;
     padding: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 10px;
+}
+.weather{
+    
+    border: 1px solid black;
+}
+.actions{
+    text-align: center;
+}
+#myurl{
+    position: fixed;
+    left:-1000px;
+}
+footer{
+    height: 120px;
+}
+
+@media screen and (max-width: 740px){
+    .container{
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+    }
 }
