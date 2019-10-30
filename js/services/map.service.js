@@ -61,7 +61,7 @@ function getAddressName(lat, lng) {
     return prm1
 }
 function getAddressLatlng(requstedAddress) {
-    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${requstedAddress},+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${requstedAddress}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
     
     var prm1 = prm.then(res => res.data)
     return prm1
