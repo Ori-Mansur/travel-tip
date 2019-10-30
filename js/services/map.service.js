@@ -4,14 +4,15 @@ export default {
     addMarker,
     panTo,
     getAddressName,
-    getAddressLatlng
+    getAddressLatlng,
+    getCurrLoc
 }
 
 
 var map;
+var gLatlng={lat:'',lng:''}
 
-
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat , lng  ) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
@@ -35,6 +36,8 @@ function addMarker(loc) {
 }
 
 function panTo(lat, lng) {
+    gLatlng.lat=lat
+    gLatlng.lng=lng
     var laLatLng = new google.maps.LatLng(lat, lng);
     map.panTo(laLatLng);
     return Promise.resolve()
@@ -54,6 +57,9 @@ function _connectGoogleApi() {
     })
 }
 
+function getCurrLoc(){
+    return gLatlng
+}
 
 function getAddressName(lat, lng) {
     var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
@@ -61,7 +67,7 @@ function getAddressName(lat, lng) {
     return prm1
 }
 function getAddressLatlng(requstedAddress) {
-    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${requstedAddress},+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${requstedAddress}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
     
     var prm1 = prm.then(res => res.data)
     return prm1
