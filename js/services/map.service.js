@@ -2,7 +2,8 @@
 export default {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getAddressName
 }
 
 
@@ -10,17 +11,17 @@ var map;
 
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-    console.log('InitMap'); 
+    console.log('InitMap');
     return _connectGoogleApi()
-    .then(() => {
-        console.log('google available');
-        map = new google.maps.Map(
-            document.querySelector('#map'), {
+        .then(() => {
+            console.log('google available');
+            map = new google.maps.Map(
+                document.querySelector('#map'), {
                 center: { lat, lng },
                 zoom: 15
             })
-        console.log('Map!', map);
-    })
+            console.log('Map!', map);
+        })
 }
 
 function addMarker(loc) {
@@ -33,8 +34,9 @@ function addMarker(loc) {
 }
 
 function panTo(lat, lng) {
-    var laLatLng = new google.maps.LatLng( lat,  lng);
+    var laLatLng = new google.maps.LatLng(lat, lng);
     map.panTo(laLatLng);
+    return Promise.resolve()
 }
 
 function _connectGoogleApi() {
@@ -44,12 +46,26 @@ function _connectGoogleApi() {
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
     document.body.append(elGoogleApi);
-    
+
     return new Promise((resolve, reject) => {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
+
+
+function getAddressName(lat, lng) {
+    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+    var prm1 = prm.then(res => res.data)
+    return prm1
+}
+function getAddressLatlng(lat, lng) {
+    var prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE`)
+    var prm1 = prm.then(res => res.data)
+    return prm1
+}
+
+
 
 
 // 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE'
