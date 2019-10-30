@@ -1,4 +1,11 @@
-.container div {
-    display: inline-block;
-    border: 1px solid;
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+}
+.weather{
+    
+    border: 1px solid black;
 }

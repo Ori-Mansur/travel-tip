@@ -9,7 +9,7 @@ export default {
 var map;
 
 
-export function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap'); 
     return _connectGoogleApi()
     .then(() => {
@@ -52,4 +52,4 @@ function _connectGoogleApi() {
 }
 
 
-'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE'
+// 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBtIZbV3hkdA38vvKGEGbrpEah3vO1ZPyE'
