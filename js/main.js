@@ -1,7 +1,9 @@
 console.log('Main!');
 
+import weatherService from './services/weather.service.js'
 import locService from './services/loc.service.js'
 import mapService from './services/map.service.js'
+
 
 
 locService.getLocs()
@@ -24,6 +26,7 @@ window.onload = () => {
         .catch(err => {
             console.log('err!!!', err);
         })
+
 }
 
 document.querySelector('.btn').addEventListener('click', (ev) => {
@@ -35,18 +38,29 @@ document.querySelector('.btn').addEventListener('click', (ev) => {
                     mapService.addMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude })
                     mapService.getAddressName(pos.coords.latitude, pos.coords.longitude)
                         .then(name => {
-                            console.log(name.results[0].formatted_address);
-
+                            renderAddress(name.results[0].formatted_address);
                         })
+                    weatherService.getWeather(pos.coords.latitude, pos.coords.longitude)
+                        .then(pos => {
+                            console.log(pos.weather[0].description) // descriptive weather
+                            console.log(pos.main.temp)      // temp in Kelvin (need to convert to celsius)
+                            console.log(pos.wind.speed)     // wind speed in  m/s
+                            console.log(pos.weather[0])  // weather icon
+                            renderWeatherIcon(pos.weather[0].icon)  // weather icon
+                        })
+
                 })
         })
     console.log('Aha!', ev.target);
 })
 
 
+
 function renderAddress(address) {
-    document.querySelector('h3').innerText = address;
+    document.querySelector('h3').innerText = 'Location: ' + address;
 }
+
+
 document.querySelector('.address-input').addEventListener('input', (ev) => {
 
     var requstedAddress = ev.target.value;
@@ -60,6 +74,12 @@ document.querySelector('.address-input').addEventListener('input', (ev) => {
             mapService.addMarker(latlng)
 
         })
-
 })
+
+
+function renderWeatherIcon(icon) {
+    var elImg = document.createElement("IMG")
+    elImg.src = `http://openweathermap.org/img/wn/${icon}@2x.png`
+    document.querySelector('.weather').appendChild(elImg);
+}
 
