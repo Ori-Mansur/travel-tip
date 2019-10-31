@@ -6,30 +6,25 @@ import mapService from './services/map.service.js'
 
 
 
-
-
-
 window.onload = () => {
     var lat = +getParameterByName('lat')
     var lng = +getParameterByName('lng')
     if (!lat && !lng) {
         mapService.initMap(32.0749831, 34.9120554)
             .then(() => {
-                mapService.addMarker({ lat:32.0749831, lng:34.9120554 });
+                mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
                 hendelPos()
-    
+
             })
             .catch(console.log('INIT MAP ERROR'));
-    }else{
+    } else {
         mapService.initMap(lat, lng)
-        .then(() => {
-            mapService.addMarker({ lat:lat, lng:lng });
-            // hendelPos()
-
-        })
-        .catch(console.log('INIT MAP ERROR'));
+            .then(() => {
+                mapService.addMarker({ lat: lat, lng: lng });
+                // hendelPos()
+            })
+            .catch(console.log('INIT MAP ERROR'));
     }
-
 
 
     locService.getPosition()
@@ -39,9 +34,7 @@ window.onload = () => {
         .catch(err => {
             console.log('err!!!', err);
         })
-
 }
-
 document.querySelector('.btn').addEventListener('click', (ev) => {
     hendelPos()
 })
@@ -56,31 +49,49 @@ function hendelPos() {
                     mapService.getAddressName(pos.coords.latitude, pos.coords.longitude)
                         .then(name => {
                             renderAddress(name.results[0].formatted_address);
-
                         })
                     weatherService.getWeather(pos.coords.latitude, pos.coords.longitude)
                         .then(pos => {
-                            console.log(pos);
-                            
-                            console.log(pos.name);
-                            console.log(pos.weather[0].description) // descriptive weather
-                            console.log(pos.main.temp)      // temp in Kelvin (need to convert to celsius)
-                            console.log(pos.wind.speed)     // wind speed in  m/s
-                            console.log(pos.weather[0])  // weather icon
-                            renderWeatherIcon(pos.weather[0].icon)  // weather icon
+                            renderWeather(pos)
                         })
-
                 })
         })
 }
 
+function renderWeather(position) {
+    renderWeatherIcon(position.weather[0].icon)
+    renderWeatherMsg(position.weather[0].description)
+    renderWeatherTemp(position.main.temp, position.main.temp_min, position.main.temp_max)
+    renderWindSpeed(position.wind.speed)
+}
+
+function renderWeatherMsg(msg) {
+    document.querySelector('.weather-description').innerText = msg;
+}
+
+function renderWeatherTemp(currTemp, minTemp, maxTemp) {
+    let tempInCels = fromKelvinToCelsius(currTemp)
+    let min = fromKelvinToCelsius(minTemp)
+    let max = fromKelvinToCelsius(maxTemp)
+    document.querySelector('.temp').innerHTML = `<span>${tempInCels}º</span> temperature fron ${min}º to ${max}ºC,`
+}
+
+function fromKelvinToCelsius(temp) {
+    return (temp - 273.15).toFixed(1)
+}
+
+function renderWindSpeed(speed) {
+    document.querySelector('.wind').innerHTML = `wind ${speed} m/s.`
+}
+
+function renderWeatherIcon(icon) {
+    document.querySelector('.weather-icon').src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+}
 
 
 function renderAddress(address) {
     document.querySelector('h3').innerText = 'Location: ' + address;
-    document.querySelector('.address-input').placeholder = address
-
-
+    document.querySelector('.address-input').placeholder = address;
 }
 
 
@@ -95,16 +106,9 @@ document.querySelector('.address-input').addEventListener('input', (ev) => {
             var latlng = loc.results[0].geometry.location;
             mapService.panTo(latlng.lat, latlng.lng)
             mapService.addMarker(latlng)
-
         })
 })
 
-
-function renderWeatherIcon(icon) {
-    var elImg = document.createElement("IMG")
-    elImg.src = `http://openweathermap.org/img/wn/${icon}@2x.png`
-    document.querySelector('.weather').appendChild(elImg);
-}
 
 document.querySelector('.copy').addEventListener('click', (ev) => {
     var currPos = mapService.getCurrLoc()
@@ -122,8 +126,6 @@ function myFunction() {
     document.execCommand('copy');
     // alert("Copied the text: " + copyText.value);
 }
-
-
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
